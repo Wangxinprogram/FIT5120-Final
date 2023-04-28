@@ -1,0 +1,105 @@
+<html>
+<head>
+    <title>Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<form id="my-form">
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age">
+    <br><br>
+
+    <label>Gender:</label>
+    <label for="male">Male</label>
+    <input type="radio" id="male" name="gender" value="Male">
+    <label for="female">Female</label>
+    <input type="radio" id="female" name="gender" value="Female">
+    <br><br>
+
+    <label>Frequent_Urination:</label>
+    <label for="frequent_urination_yes">Yes</label>
+    <input type="radio" id="frequent_urination_yes" name="frequent_urination" value="Yes">
+    <label for="frequent_urination_no">No</label>
+    <input type="radio" id="frequent_urination_no" name="frequent_urination" value="No">
+    <br><br>
+
+    <label>Frequent_Thirst:</label>
+    <label for="frequent_urination_yes">Yes</label>
+    <input type="radio" id="frequent_thirst_yes" name="frequent_thirst" value="Yes">
+    <label for="frequent_urination_no">No</label>
+    <input type="radio" id="frequent_thirst_no" name="frequent_thirst" value="No">
+    <br><br>
+
+    <label>Weakness:</label>
+    <label for="weakness_yes">Yes</label>
+    <input type="radio" id="weakness_yes" name="weakness" value="Yes">
+    <label for="weakness_no">No</label>
+    <input type="radio" id="weakness_no" name="weakness" value="No">
+    <br><br>
+
+    <label>Excessive_Eating:</label>
+    <label for="excessive_eating_yes">Yes</label>
+    <input type="radio" id="excessive_eating_yes" name="excessive_eating" value="Yes">
+    <label for="excessive_eating_no">No</label>
+    <input type="radio" id="excessive_eating_no" name="excessive_eating" value="No">
+    <br><br>
+
+    <label>Delayed_Healing:</label>
+    <label for="delayed_healing_yes">Yes</label>
+    <input type="radio" id="delayed_healing_yes" name="delayed_healing" value="Yes">
+    <label for="delayed_healing_no">No</label>
+    <input type="radio" id="delayed_healing_no" name="delayed_healing" value="No">
+    <br><br>
+
+    <label>Partial_Paresis:</label>
+    <label for="partial_paresis_yes">Yes</label>
+    <input type="radio" id="partial_paresis_yes" name="partial_paresis" value="Yes">
+    <label for="partial_paresis_no">No</label>
+    <input type="radio" id="partial_paresis_no" name="partial_paresis" value="No">
+    <br><br>
+
+    <label>Blood_Pressure:</label>
+    <label for="blood_pressure_yes">Yes</label>
+    <input type="radio" id="blood_pressure_yes" name="blood_pressure" value="Yes">
+    <label for="blood_pressure_no">No</label>
+    <input type="radio" id="blood_pressure_no" name="blood_pressure" value="No">
+    <br><br>
+
+
+    <label>Family_History:</label>
+    <label for="family_history_yes">Yes</label>
+    <input type="radio" id="family_history_yes" name="family_history" value="Yes">
+    <label for="family_history_no">No</label>
+    <input type="radio" id="family_history_no" name="family_history" value="No">
+    <br><br>
+
+    <label for="height">Height(cm):</label>
+    <input type="number" id="height" name="height">
+    <br><br>
+    <label for="weight">Weight(kg):</label>
+    <input type="number" id="weight" name="weight">
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+<br><br>
+<div id="result"></div>
+<script>
+    $(document).ready(function () {
+        $('#my-form').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/predict',
+                type: 'POST',
+                data: $('#my-form').serialize(),
+                success: function (response) {
+                    $('#result').html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
