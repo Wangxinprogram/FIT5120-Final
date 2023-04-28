@@ -7,10 +7,10 @@ Author: Xin Wang
 */
 
 function custom_search_shortcode() {
-    $output = '<div class="search-bar">
+    $output = '<div class="search-container">
         <form action="' . esc_url( $_SERVER['REQUEST_URI'] ) . '" method="post">
-            <input type="text" name="search" placeholder="Search Ingredient, Dish, Keyword...">
-            <button type="submit">Search</button>
+            <input type="text" id="search" name="search" placeholder="Ingredient, Dish, Keyword...">
+            <button type="submit" id="search-btn">Search</button>
         </form>
     </div>';
 
@@ -24,21 +24,34 @@ function custom_search_shortcode() {
 		$column_C = 'ingredients';
 		$column_D = 'instructions';
 		$column_E = 'img_url';
+		$column_F = 'title_addr';
+		
+		
 
-        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE $column_A LIKE %s", '%' . $wpdb->esc_like( $search_term ) . '%' ) );
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE $column_A LIKE %s ", '%' . $wpdb->esc_like( $search_term ) . '%' ) );
 
-        $output .= "<table border='1'>";
-        $output .= "<tr><th>column1</th><th>column2</th></tr>";
+        
 
         if ( ! empty( $results ) ) {
+			$output .= '<div class="list-container">';
+			
+			$output .= '<ul class="my-list">';
             foreach ( $results as $row ) {
                 //$output .= "<tr><td>" . esc_html( $row->$column_A ) . "</td><td>" . esc_html( $row->$column_B ) . "</td></tr>";
-				$output .= "<tr><td>" . $row->$column_A . "</td><td>" . $row->$column_E . "</td></tr>";
+				//$output .= "<tr><td>" . $row->$column_A . "</td><td>" . $row->$column_E . "</td></tr>";
+				$output .= "<li>";
+				$output .= "<div>" . $row->$column_E . "</div>";
+				$output .= "<h6>" . $row->$column_F . "</h6>";
+				$output .= "</li>";
             }
+			$output .= "</ul>";
+			
+			$output .= "</div>";
+		
         } else {
-            $output .= "<tr><td colspan='2'>No Matching Results</td></tr>";
+            $output .= "<h5>No match results</h5>";
         }
-        $output .= "</table>";
+        //$output .= "</table>";
     }
 
     return $output;
@@ -49,18 +62,84 @@ add_shortcode( 'custom_search', 'custom_search_shortcode' );
 function custom_search_styles() {
     echo '
     <style>
-        .search-bar {
-            display: flex;
-            margin-bottom: 20px;
+        
+    .search-container {
+      text-align: right;
+      margin-right: 10%;
+    }
+
+    
+    #search {
+      width: 250px;
+      height: 30px;
+      border-radius: 20px;
+      border: none;
+      padding: 5px 10px;
+      background-color: #ccc;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    
+    #search-btn {
+      width: 120px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      margin-left: 10px;
+      background-color: #008CBA;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: middle;
+    }
+	
+	.list-container {
+        display: flex;
+        justify-content: center;
+      }
+
+      .my-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .my-list li {
+        width: 274px;
+        box-sizing: border-box;
+        padding: 10px;
+        background-color: #f2f2f2;
+        margin: 35px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 768px) {
+        .my-list li {
+          width: calc(45% - 10px);
         }
-        input {
-            width: 100%;
-            padding: 5px;
+      }
+
+      @media screen and (max-width: 480px) {
+        .my-list li {
+          width: 100%;
         }
-        button {
-            padding: 5px 10px;
-            cursor: pointer;
-        }
+      }
+
+	 a {
+      text-decoration: none;
+      color: black;
+		}
+	
+	h5 {
+		text-align: center;
+	}
     </style>';
 }
 
